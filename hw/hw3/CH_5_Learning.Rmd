@@ -1,0 +1,225 @@
+---
+title: "Chapter 4--5: Learning Sheet"
+author: "Sheng-Mao"
+date: "4/16/2025"
+output: html_document
+---
+
+# 範例：Horseshore Crab Problem
+
+## 實驗 
+
+鱟為鱟科動物的通稱，又名「馬蹄蟹」、「蟹兜」、「夫妻魚」，屬於劍尾目的海生節肢動物，而劍尾目最早出現的時間可回溯至奧陶紀，因此被譽為活化石。現存的鱟種類僅存3屬4種。（如何拿到資料的呢？算是隨機去抓吧！）
+
+## 核心問題
+
+- 科學問題：什麼樣子的母鱟會有公鱟隨侍在側？
+- 統計問題：母鱟的特徵 (covariates) --> 有公鱟隨侍在側 (response)
+- 統計屬性：
+  + Confirmatory: 如果文獻已對歐洲鱟做過研究，我們想知到是否亞洲鱟也是一樣。
+  + Exploratory: 文獻沒有，我們單純對問題有興趣。
+此研究主要是探索性研究。
+
+## 資料
+
+```{r}
+Data <- read.table("~/Teaching/CDA_master_inService_2026/data/crab.txt", header=TRUE)
+str(Data)
+```
+
+
+#### 將數字變項化為類別變項
+```
+Data$color <- as.factor(Data$color)
+Data$spine <- as.factor(Data$spine)
+str(Data)
+```
+
+#### 統計模型建構
+
+- 因為是 Exploratory Study 所以需要統計建模（變數選擇）
+- 手上有一堆 X (covariate) 怎麼辦？先看 Y 與 X 的關係
+  - Y: 0/1 binary
+  - X continuous
+    - 視覺化：散布圖
+    - 統計檢定：t-test or ANOVA
+  - X categorical
+    - 視覺化：馬賽克圖
+    - 統計檢定：chi-square independent test
+    
+- Continuous: Weight and Width    
+```{r}
+pairs(Data[,-c(1:2)])
+t.test(weight~y, data=Data)
+t.test(width~y, data=Data)
+cor.test(Data$weight, Data$width)
+```
+
+- Categorical: Color and Spine
+```{r}
+mosaicplot(y~color, data=Data)
+chisq.test(table(Data$y, Data$color))
+mosaicplot(y~spine, data=Data)
+chisq.test(table(Data$y, Data$spine))
+mosaicplot(color~spine, data=Data)
+chisq.test(table(Data$color, Data$spine))
+
+## chis-square test
+### Observed Count
+OC <- table(Data$color, Data$spine)
+### Expected Count
+EC <- apply(OC, 1, sum)%*%t(apply(OC, 2, sum))/sum(OC)
+cbind(OC, round(EC, digits=2))
+```
+
+### 從圖中我看到：
+  
+  + "spine" 可能比較沒用。
+  + "spine" 與 "color" 之間不獨立。
+  + "weight" 與 "width" 高度相關，會造成多重共線性問題。
+  
+Note: when you have several variables, use all of these variables; when you have a lot of variables, screen out some uncorrelated (with the response variable) and highly correlated (among predictors) predictors prior to do further data analysis.
+
+### 資料分析
+
+  + 探索性實驗的目的就是要建立一個合理的預測模型
+  + Begin with the most complex model and then do model selection.
+  
+```{r}
+## Full Model
+log.fit <- glm(y~weight+width+factor(color)+factor(spine), family=binomial, data=Data)
+summary(log.fit)
+```
+
+  + Model Selection by Backward and AIC
+```{r}
+step(log.fit)
+```
+
+## Parsimonious Model
+```{r}
+log.fit.1 <- glm(y~width+factor(color), family=binomial, data=Data)
+summary(log.fit.1)
+```
+
+
+
+### 考慮
+
+1. 整併類別變數（why?）
+
+```{r}
+Data$color2 <- as.factor(ifelse(Data$color == 1, 1, 0))
+red.log.fit.2 <- glm(y~width+color2, family=binomial, data=Data)
+summary(red.log.fit.2)
+```
+
+- The AIC for the 2-class color model is 200.37
+- The AIC for the 4-class color model is 197.46
+- Choose the 4-class color model
+
+2. 考慮交互作用
+
+```{r}
+log.fit.3 <- glm(y~width*factor(color), family=binomial, data=Data)
+summary(log.fit.3)
+```
+
+- The AIC for the **without** interaction model is 197.46
+- The AIC for the **with** interaction model is 199.08
+- Choose the **without** interaction model
+
+3. 是否該讓 color 變成連續變數
+
+```{r}
+Data$color_c <- as.numeric(Data$color)
+log.fit.c <- glm(y~width+color_c, family=binomial, data=Data)
+summary(log.fit.c)
+```
+
+- The AIC for the **discrete color** model is 197.46
+- The AIC for the **continuous color** model is 195.12
+- Choose the **continuous color** model
+
+### 最後看一下預測能力
+
+- Categorical Color
+```{r, message=FALSE}
+library(pROC)
+pred_cate <- predict(log.fit.1, type="response")
+roc_cate <- roc(Data$y, pred_cate, quiet=TRUE)
+auc(roc_cate); plot(roc_cate)
+```
+
+- Continuous Color
+```{r, message=FALSE}
+pred_cont <- predict(log.fit.c, type="response")
+roc_cont <- roc(Data$y, pred_cont, quiet=TRUE)
+auc(roc_cont); plot(roc_cont)
+```
+
+### 總結： 
+
+- *連續模型* 與 *類別模型* 差不多。我選 *類別模型** 因為比較有故事性，而且用掉的自由度也沒有差太多。
+
+- 模型
+  \[
+    \log \frac{\pi}{1-\pi} = -11.385 + 0.468 \mbox{ width} + 0.072 c_2 - 0.223 c_3 - 1.330 c_4
+  \]
+- Odds ratio
+
+```{r}
+coefficients(log.fit.1)
+exp(coefficients(log.fit.1))
+round(exp(confint(log.fit.1)), digits=3)
+```
+
+- 在顏色不變的條件之下，母鱟甲殻每增加一單位，該鱟身邊有公鱟相隨的成敗比是原來的1.597倍。Odds ratio 的95%信賴區間為(1.312, 1.988).
+- 有關顏色的 odds ratio 的解釋
+
+  - 比起顏色1，母鱟為顏色2時，該鱟身邊有公鱟相隨的成敗比是原來的1.075倍。
+  - 比起顏色1，母鱟為顏色3時，該鱟身邊有公鱟相隨的成敗比是原來的0.799倍。
+  - 比起顏色1，母鱟為顏色4時，該鱟身邊有公鱟相隨的成敗比是原來的0.266倍。
+
+- 比起顏色2，母鱟為顏色4時，該鱟身邊有公鱟相隨的成敗比是原來的多少倍？
+```{r}
+beta <- coefficients(log.fit.1)
+V.beta <- vcov(log.fit.1)
+contrast <- c(0, 0, -1, 0, 1)
+
+diff <- sum(beta*contrast)
+diff.se <- sqrt(t(contrast)%*%V.beta%*%contrast)
+lb <- round(exp(diff - 1.96*diff.se), digits=3)
+ub <- round(exp(diff + 1.96*diff.se), digits=3)
+cat("Odds ratio=", round(exp(diff), digits=3), "with 95% CI=[", lb, ",", ub, "]\n")
+```
+
+### Homework 3 Due 2026/04/23
+
+#### 糖尿病預測分析
+
+```{r}
+diabete <-read.csv("https://gist.githubusercontent.com/chaityacshah/899a95deaf8b1930003ae93944fd17d7/raw/3d35de839da708595a444187e9f13237b51a2cbe/pima-indians-diabetes.csv")
+colnames(diabete) <- c("pregnant","glucose", "blood_pressure", "triceps", "serum_insulin", "mass", "pedigree" , "age","diabetes")
+str(diabete)
+```
+
+- Response
+  - diabetes: 糖尿病（1:有、0:無）
+- Covariates
+  - pregnant: 懷孕次數
+  - glucose: 血漿葡萄糖濃度
+  - blood_pressure: 舒張壓
+  - triceps: 三頭肌皮膚褶皺厚度
+  - serum_insulin: 血清胰島素
+  - mass: BMI
+  - pedigree: 糖尿病譜系功能
+  - age: 年齡
+
+- Data Analysis
+  - Visualization
+  - Do model selection for main effect
+  - Categorize blood_pressure / serum_insulin variables
+  - Does categorized variables fit data better?
+  - Consider interaction effect
+  - Give me your final model and explain the model

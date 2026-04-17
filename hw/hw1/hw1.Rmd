@@ -1,0 +1,120 @@
+---
+title: "hw1"
+author: "chienhua.hsu"
+date: "2026-03-10"
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
+---
+  
+# 乳糖不耐症比例調查
+  
+## 事實
+  
+  根據全球醫學統計，成年人患有乳糖不耐症（Lactose Intolerance）的平均比例約為 65% ($\pi_0 = 0.65$)。但在亞洲地區，由於基因差異，此比例通常被認為顯著較高。
+
+|  項目  | 全球平均 (H0) |
+|--------|:------------:|
+| 百分比 |      65%     |
+  
+## 猜想
+  
++ 傳說中，亞洲人因缺乏分解乳糖的酵素，比例遠高於全球平均。
++ 針對周圍成年人進行小規模(n=10)抽樣，猜想其比例高於 0.65。
++ 利用統計檢定來審視這個猜想：
+
++ $H_0: \pi = 0.65$
++ $H_a: \pi > 0.65$
+  
+## 實驗
+  
++ 隨機調查 10 位成年人並記錄其飲用乳製品後的反應。
+
+## 觀察結果：
+
++ 親朋好友、同事參與調查人數為 $n = 10$ 
++ 具乳糖不耐症狀的人數為 $x = 5$ (假設值)
++ 樣本比例為 $\hat{\pi} = x/n$
+  
+```{r}
+n <- 10; x <- 5 # change values here
+alpha <- 0.05
+pihat <- x/n; pi0 <- 0.65
+```
+
+
+## 區間估計 (Confidence Interval)
+
++ Wald Test
+
+\[\hat{\pi}\pm
+  z_{\alpha/2}\sqrt{\frac{\hat{\pi}(1-\hat{\pi})}{n}}.\]
+
+```{r}
+lb <- pihat + qnorm(alpha/2)*sqrt(pihat*(1-pihat)/n) 
+ub <- pihat + qnorm(1-alpha/2)*sqrt(pihat*(1-pihat)/n) 
+cat("Wald 95% CI is [", lb, ub, "]\n")
+```
+
++ Score Test
+
+\[
+  \hat{\pi}\left(\frac{n}{n+z_{\alpha/2}^2}\right)+
+    \frac{1}{2}\left(\frac{z_{\alpha/2}^2}{n+z_{\alpha/2}^2}\right)
+  \pm\sqrt{\frac{1}{n+z_{\alpha/2}^2}\left[\left(\frac{n\hat{\pi}(1-\hat{\pi})}{n+z_{\alpha/2}^2}\right)+
+                                             \left(\frac{z_{\alpha/2}^2}{4(n+z_{\alpha/2}^2)}\right)\right]}
+  \]
+
+```{r}
+z2 <- (qnorm(alpha/2))^2
+mu <- pihat*n/(n+z2) + .5*(z2/(n+z2))
+sig <- sqrt((n*pihat*(1-pihat)/(n+z2) + z2/4/(n+z2))/(n+z2))
+lb <- mu - sig
+ub <- mu + sig
+cat("Score 95% CI is [", lb, ub, "]\n")
+```
+
+## 假設檢定
+
+### Large sample approximation
+
++ Check $np \geq 5$ and $n(1-p) \geq 5$
+  + $H_0$ vs $H_a$ 
+  + $\alpha=0.05$
+  + Test statistics
+
++ Wald Test
+\[
+  \frac{\hat{\pi} - \pi_0}{\sqrt{\hat{\pi} (1-\hat{\pi})/n}} = t_w
+  \]
++ Score Test
+\[
+  \frac{\hat{\pi} - \pi_0}{\sqrt{\pi_0 (1-\pi_0)/n}} = t_s
+  \]
+
+```{r}
+(pihat-pi0)/sqrt(pihat*(1-pihat)/n)
+(pihat-pi0)/sqrt(pi0*(1-pi0)/n)
+```
+
+
++ Critical value $1.645$ (one-tailed)
++ Decision:
+  + Walt Test: reject $H_0$ if $t_w > 1.645$
+  + Score Test: regject $H_0$ if $t_s > 1.645$
+  
+  ### Small Sample Exact Test
+  
+  + $p$-value is
+
+```{r}
+1 - pbinom(x-1, n, pi0)
+```
+
++ mid $p$-value 
+
+```{r}
+1 - pbinom(x, n, pi0) + dbinom(x, n, pi0)/2
+```
+

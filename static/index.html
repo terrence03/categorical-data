@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CDA 類別資料分析 - 期中考模擬測驗</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div id="app" class="container">
+        <!-- Header -->
+        <header>
+            <h1>Categorical Data Analysis</h1>
+            <p class="subtitle">期中模擬考系統 (CH1 - CH6)</p>
+        </header>
+
+        <!-- Main Content -->
+        <main id="main-content">
+            <!-- Welcome View -->
+            <section id="welcome-view" class="card active">
+                <h2>歡迎複習期中考</h2>
+                <p>請選擇測驗範圍：</p>
+                <div class="menu-grid" id="chapter-menu">
+                    <!-- Chapters will be loaded here -->
+                </div>
+                <button id="start-full-test" class="btn primary">全範圍隨機模擬考</button>
+            </section>
+
+            <!-- Quiz View -->
+            <section id="quiz-view" class="card">
+                <div class="quiz-header">
+                    <span id="chapter-tag" class="badge">Chapter 1</span>
+                    <div class="progress-container">
+                        <div id="progress-bar" class="progress-bar"></div>
+                    </div>
+                    <span id="progress-text">1 / 15</span>
+                </div>
+                
+                <div id="question-container">
+                    <h3 id="question-text">載入題目中...</h3>
+                    <div id="options-list" class="options-grid">
+                        <!-- Options will be loaded here -->
+                    </div>
+                </div>
+
+                <div id="feedback" class="feedback-area hidden">
+                    <p id="feedback-text"></p>
+                    <div class="explanation">
+                        <strong>解析：</strong> <span id="explanation-text"></span>
+                    </div>
+                </div>
+
+                <div class="quiz-footer">
+                    <button id="next-btn" class="btn secondary" disabled>下一題</button>
+                </div>
+            </section>
+
+            <!-- Result View -->
+            <section id="result-view" class="card">
+                <h2>測驗結果分析</h2>
+                <div id="score-summary">
+                    <div class="big-score">
+                        <span id="total-score">0</span><small>/100</small>
+                    </div>
+                    <p id="result-comment"></p>
+                </div>
+
+                <div class="analytics">
+                    <h3>各章節掌握度</h3>
+                    <div id="chapter-stats">
+                        <!-- Chapter bars will be loaded here -->
+                    </div>
+                </div>
+
+                <div class="footer-actions">
+                    <button onclick="location.reload()" class="btn primary">重新測驗</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+---
+title: 'Chapter 2: Study Sheet'
+author: "Chienhua.Hsu"
+date: "3/25/2026"
+output:
+  word_document: default
+  html_document: default
+---
+
+# 作業：性別與就業之關聯
+
+性別是否會影響就業
+
+## 資料：
+
+|           | Male  | Female | Total |
+|-----------|------:|-------:|------:|
+|Employed   | 12016 | 10602  | 22618 | 
+|Unemployed |   733 |   750  |  1483 |
+|Total      | 12749 | 11352  | 24101 |
+
+```{r}
+A <- matrix(c(733,750,12016, 10602), 2, 2)
+B <- A
+rownames(B) <- c("Male", "Female")
+colnames(B) <- c("Unemployed", "Employed")
+B
+```
+
+## 觀察：
+
++ 失業機率為何？ 
+  
+  Pr（失業）= 1483 / 24101 = 0.062
+
++ 男性失業率：
+    
+  - $\pi_2 =$ Pr（男性｜失業）
+  - $\widehat{\pi}_2 = 733 / 12749 \approx 0.057$
+    
++ 女性失業率：
+    
+  - $\pi_1 =$ Pr（女性｜失業）
+  - $\widehat{\pi_1}= 750 / 11352 \approx 0.066$
+  
+## 問題：女性是否會顯著降低就業之機會？
+
+## 回答：
+
+以下將以四個角度來回答這個問題：
+
+### Difference of Proportions $H_0: \pi_1 - \pi_2 = 0$ vs $H_a: \pi_1 - \pi_2 \neq 0$
+
+- 公式
+
+  + $d = \hat\pi_1 - \hat\pi_2$
+  + \[
+    Var(d) = \frac{\hat\pi_1 (1-\hat\pi_1)}{n_1}
+      + \frac{\hat\pi_2 (1-\hat\pi_2)}{n_2}
+  \]
+  + $(1-\alpha)\times 100$\% CI of $\pi_1-\pi_2$ is
+    \[
+      \left(d - z_{\alpha/2}\times \sqrt{Var(d)}, \quad
+      d + z_{\alpha/2}\times \sqrt{Var(d)}\right)
+    \]
+
+- 計算過程
+  
+```{r}
+pi_1_hat <- B[1,1]/sum(B[1,]); pi_1_hat
+pi_2_hat <- B[2,1]/sum(B[2,]); pi_2_hat
+diff <- pi_1_hat - pi_2_hat; diff
+var_diff <- pi_1_hat*(1-pi_1_hat)/sum(B[1,]) +
+  pi_2_hat*(1-pi_2_hat)/sum(B[2,])
+ub <- diff + qnorm(.975)*sqrt(var_diff)
+lb <- diff + qnorm(.025)*sqrt(var_diff)
+cat("The estimate of pi_1 - pi_2 is", diff, "\n")
+cat("The corresponding 95 CI for diff is [", lb, " , ", ub, "]\n")
+```
+
+- 結論：
+
+  + 男性失業機率為0.057，而女性失業的機率為0.066。
+  + 因為上述95%信賴區間不包含0，所以拒絕虛無假設，又因為 $\hat p_1 - \hat p_2 <0$，所以我們的結論為，男性失業的機率顯著低於女性，顯示性別對失業率有顯著影響，女性更有可能失業。
+  
+### Relative Risk $H_0: \pi_1/\pi_2 = 1$
+
+- 公式
+
+  + $RR = \pi_1/\pi_2$ and $\hat{RR} = \hat\pi_1/\hat\pi_2$
+  + \[
+    \log(\hat{RR}) \sim N\left( \log(RR), \hat{Var}(\log(\hat{RR}))\right) \quad \mbox{where} \quad \hat{Var}(\log(\hat{RR})) =\frac{1-\hat\pi_1}{n_{1+}\hat\pi_1} + \frac{1-\hat\pi_2}{n_{2+}\hat\pi_2}
+  \]
+  + $(1-\alpha)\times 100$\% CI of $\log(RR)$ is
+  \[
+    log(\hat{RR}) \pm z_{\alpha/2}\times \sqrt{\hat{Var}(\log(\hat{RR}))}
+  \]
+
+- 計算過程
+
+```{r}
+RR_hat <- pi_1_hat/pi_2_hat; RR_hat
+log_RR_hat <- log(RR_hat); log_RR_hat
+var_log_RR_hat <- (1-pi_1_hat)/(sum(B[1,])*pi_1_hat) + (1-pi_2_hat)/(sum(B[2,])*pi_2_hat)
+ub <- log_RR_hat + qnorm(.975)*sqrt(var_log_RR_hat)
+lb <- log_RR_hat + qnorm(.025)*sqrt(var_log_RR_hat)
+elb <- exp(lb); eub <- exp(ub)
+cat("The estimate of the RR is", RR_hat, "\n")
+cat("The corresponding 95 CI for RR is [", elb, " , ", eub, "]\n")
+```
+
+- 結論
+
+  + 男性失業的風險是女性的0.87（$\hat{RR}$）倍。
+  + 因為上述95%信賴區間不包含1，所以拒絕虛無假設，又因為 $\hat p_1 /\hat p_2 <1$，所以我們的結論為，男性失業的機率顯著低於女性，顯示性別對失業率有顯著影響，女性更有可能失業。
+
+### Odds Ratio $H_0: \theta = 1$
+
+- 公式
+  
+  + Odds ratio
+    \[
+      \theta = \frac{\pi_{11}\pi_{22}}{\pi_{12}\pi_{21}}
+    \]
+  + Odds ratio estimator
+  
+    + If all counts are greater than zero,
+    \[
+      \hat\theta = \frac{n_{11}n_{22}}{n_{12}n_{21}}
+    \]
+    with
+    \[
+      Var(\log(\hat{\theta})) = \frac{1}{n_{11}} + \frac{1}{n_{12}} + \frac{1}{n_{21}} + \frac{1}{n_{22}}
+    \]
+    + If any count is equal to zero,
+    \[
+      \hat\theta = \frac{(n_{11}+0.5)(n_{22}+0.5)}{(n_{12}+0.5)(n_{21}+0.5)}
+    \]
+    with
+    \[
+      Var(\log(\hat{\theta})) = \frac{1}{n_{11}+0.5} + \frac{1}{n_{12}+0.5} + \frac{1}{n_{21}+0.5} + \frac{1}{n_{22}+0.5}
+    \]
+    
+  + $(1-\alpha)\times 100$\% CI of $\theta$ is
+  \[
+    log(\hat{\theta}) \pm z_{\alpha/2}\times \sqrt{\hat{Var}(\log(\hat{\theta}))}
+  \]
+  
+- 計算過程
+
+```{r}
+if(min(B) == 0){
+  B2 <- B + 0.5
+}else{
+  B2 <- B
+}
+theta_hat <- B2[1,1]*B2[2,2]/B2[1,2]/B2[2,1]; theta_hat
+log_theta_hat <- log(theta_hat); log_theta_hat
+var_log_theta_hat <- sum(1/B2)
+ub <- log_theta_hat + qnorm(.975)*sqrt(var_log_theta_hat)
+lb <- log_theta_hat + qnorm(.025)*sqrt(var_log_theta_hat)
+elb <- exp(lb); eub <- exp(ub)
+cat("The estimate of the odds ratio is", theta_hat, "\n")
+cat("The corresponding 95 CI for the odds ratio is [", elb, " , ", eub, "]\n")
+```
+
+- 結論
+
+  + 男性失業與就業的比例是女性（事業與就業比例）的0.862（$\hat\theta$）倍，即男性發生失業的機會比女性低
+  + 因為上述95%信賴區間不包含1，所以拒絕虛無假設，又因為 $\hat\theta <1$，所以我們的結論為，男性失業的機率顯著低於女性，顯示性別對失業率有顯著影響，女性更有可能失業。
+
+### Independence Test: $H_0:$ no association vs $H_a:$ some association
+
+- 公式
+
+  + Expected count: $E_{ij} = n_{i+}n_{+j}/n$
+  + Test statistic
+    \[
+      X^2 = \sum_{i=1}^I \sum_{j=1}^J \frac{(n_{ij}-E_{ij})^2}{E_{ij}} \stackrel{H_0}{\sim} \chi^2_{(I-1)(J-1)}
+    \]
+
+- 計算過程
+
+```{r, message=FALSE}
+library(vcd)
+mosaic(B)
+ct <- chisq.test(B); ct
+ct$residuals
+```
+
+- 結論
+
+  + 根據卡方檢定，性別與失業狀況顯著相關p-value < 0.05。
+  + 根據標準化殘差可知，男性且失業組比期望次數少，女性且失業組比期望次數多，所以比起獨立（不相關）的情況，本資料顯示有較少的男性且失業的人，女性失業的機率顯著較高。
+  
+
+          

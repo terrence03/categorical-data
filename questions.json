@@ -1,0 +1,633 @@
+[
+  {
+    "chapter": 1,
+    "question": "在進行單一比例 (Single Proportion) 的假設檢定時，哪一種檢定法使用虛無假設 H0 下的變異數進行標準化？",
+    "options": ["Wald Test", "Score Test", "Likelihood Ratio Test", "Exact Binomial Test"],
+    "answer": 1,
+    "explanation": "Score Test 使用虛無假設 H0 下的參數值 pi0 來計算標準誤，即 sqrt(pi0*(1-pi0)/n)。"
+  },
+  {
+    "chapter": 1,
+    "question": "當樣本數 n 較小或機率 pi 接近 0 或 1 時，哪種信賴區間 (Confidence Interval) 的覆蓋率通常最接近名義上的 (1-alpha)？",
+    "options": ["Wald CI", "Score CI (Wilson)", "Logit CI", "Standard Normal CI"],
+    "answer": 1,
+    "explanation": "Wald CI 在樣本數小時效果極差，Score CI (Wilson) 被證明在覆蓋機率上更為穩健且精確。"
+  },
+  {
+    "chapter": 1,
+    "question": "在類別資料分析中，多項分配 (Multinomial Distribution) 的自由度 (df) 應如何計算？(假設類別數為 k)",
+    "options": ["k", "k-1", "n-1", "n-k"],
+    "answer": 1,
+    "explanation": "由於機率總和必須為 1，因此只有 k-1 個參數是自由變動的。"
+  },
+  {
+    "chapter": 1,
+    "question": "關於 Likelihood Ratio Test (LRT) 的敘述，下列何者正確？",
+    "options": ["檢定統計量為兩個最大似然函數之比值", "檢定統計量為 -2 log(Lambda)", "在大樣本下服從 F 分配", "僅能用於線性模型"],
+    "answer": 1,
+    "explanation": "LRT 統計量定義為 -2 log(Lambda)，其中 Lambda 為似然函數之比，大樣本下服從卡方分配。"
+  },
+  {
+    "chapter": 1,
+    "question": "使用 Delta Method 的主要目的是什麼？",
+    "options": ["計算隨機變數函數的漸近變異數", "增加樣本數", "修正多項式回歸", "處理遺漏值"],
+    "answer": 0,
+    "explanation": "Delta Method 利用 Taylor 展開來估計非線性轉換後統計量的漸近分配與變異數。"
+  },
+  {
+    "chapter": 1,
+    "question": "對於 Pearson's X^2 檢定與 Likelihood Ratio Test (G^2)，當樣本數 n 趨於無窮大時，這兩者的關係為何？",
+    "options": ["兩者數值完全相等", "兩者會趨於一致 (Asymptotically equivalent)", "X^2 恆大於 G^2", "G^2 恆大於 X^2"],
+    "answer": 1,
+    "explanation": "在大樣本下，Pearson X^2 與 G^2 統計量會非常接近且服從相同的卡方分配。"
+  },
+  {
+    "chapter": 1,
+    "question": "在 H0: pi = 0.5 的單尾檢定中，若觀察到 n=10, x=9，應該使用哪種方法計算 p-value 最準確？",
+    "options": ["Wald Z-test", "Normal Approximation", "Exact Binomial Test", "Chi-square Test"],
+    "answer": 2,
+    "explanation": "當 n=10 如此小時，常態近似不準確，應使用 Exact Binomial Test 計算機率。"
+  },
+  {
+    "chapter": 1,
+    "question": "所謂的『Agresti-Coull CI』是對哪種區間的改進？",
+    "options": ["Wald CI", "Score CI", "Exact CI", "Bayesian CI"],
+    "answer": 0,
+    "explanation": "Agresti-Coull CI 透過在成功與失敗數各加上 2 (對 95% CI 而言) 來大幅改善 Wald CI 的覆蓋率問題。"
+  },
+  {
+    "chapter": 1,
+    "question": "Poisson 分配的一個核心特性是其期望值 E(Y) 與變異數 Var(Y) 的關係為：",
+    "options": ["E(Y) > Var(Y)", "E(Y) < Var(Y)", "E(Y) = Var(Y)", "兩者無關"],
+    "answer": 2,
+    "explanation": "Poisson 分配中，期望值與變異數皆等於其參數 lambda。"
+  },
+  {
+    "chapter": 1,
+    "question": "在進行適合度檢定 (Goodness of Fit) 時，若類別機率固定，檢定統計量服從 df = k-1 的卡方分配，這裡的 k 是指：",
+    "options": ["樣本數", "解釋變數個數", "類別總數", "模型維度"],
+    "answer": 2,
+    "explanation": "自由度由類別總數減去參數限制（機率和為1）決定。"
+  },
+  {
+    "chapter": 1,
+    "question": "下列何者不是廣義線性模型 (GLM) 的必要組成部分？",
+    "options": ["隨機成分 (Random component)", "系統成分 (Systematic component)", "誤差項正態性 (Normality of error)", "連接函數 (Link function)"],
+    "answer": 2,
+    "explanation": "GLM 的誤差不一定要是正態的，它可以是指數族 (Exponential Family) 的任何成員。"
+  },
+  {
+    "chapter": 1,
+    "question": "若一個 95% CI 為 [0.4, 0.6]，則我們可以推論：",
+    "options": ["有 95% 的機率真值落在這之間", "重複抽樣下，約有 95% 的區間會包含真值", "真值一定在 0.5", "樣本比例一定是 0.5"],
+    "answer": 1,
+    "explanation": "這是頻率論者對信賴區間的標準解釋：區間隨機變動，包含真值的長期頻率為 95%。"
+  },
+  {
+    "chapter": 1,
+    "question": "什麼情況下會發生 Overdispersion (過度離散)？",
+    "options": ["變異數大於模型所預測的變異數", "樣本數太大", "R 平方太低", "殘差呈常態分配"],
+    "answer": 0,
+    "explanation": "例如在 Poisson 模型中，若實際變異數大於平均值，即為過度離散。"
+  },
+  {
+    "chapter": 1,
+    "question": "Maximum Likelihood Estimation (MLE) 的核心思想是：",
+    "options": ["最小化殘差平方和", "尋找一組參數使觀測到現有數據的機率最大", "使模型變異數最小", "使 R 平方最大"],
+    "answer": 1,
+    "explanation": "MLE 旨在最大化似然函數 (Likelihood Function)。"
+  },
+  {
+    "chapter": 1,
+    "question": "在類別資料分析中，當 n 很大時，Test Statistics 的分配通常趨近於：",
+    "options": ["t 分配", "F 分配", "卡方分配", "指數分配"],
+    "answer": 2,
+    "explanation": "大樣本下，多數類別資料的檢定統計量（如 X^2, G^2）均服從卡方分配。"
+  },
+  {
+    "chapter": 2,
+    "question": "勝算比 (Odds Ratio, OR) 的範圍是？",
+    "options": ["-1 到 1", "0 到 1", "0 到 正無窮", "-無窮 到 正無窮"],
+    "answer": 2,
+    "explanation": "Odds 為機率比值，恆為正，因此 OR 範圍為 [0, inf)。"
+  },
+  {
+    "chapter": 2,
+    "question": "若 OR = 1，代表兩變數之間的關係為：",
+    "options": ["正相關", "負相關", "獨立", "完美預測"],
+    "answer": 2,
+    "explanation": "OR = 1 意味著兩組的勝算相同，即變數之間互為獨立。"
+  },
+  {
+    "chapter": 2,
+    "question": "相對風險 (Relative Risk, RR) 與勝算比 (OR) 在什麼情況下會非常接近？",
+    "options": ["樣本數 n 很大時", "邊際機率 pi 很大時", "罕見事件 (Rare disease) 發生時", "兩組樣本數相等時"],
+    "answer": 2,
+    "explanation": "當 pi 接近 0 時，1-pi 接近 1，此時 OR = (pi1/(1-pi1)) / (pi2/(1-pi2)) 約等於 pi1/pi2 = RR。"
+  },
+  {
+    "chapter": 2,
+    "question": "Odds Ratio 的一個重要特性是『不變性』(Invariance)，這指的是：",
+    "options": ["行列對調後 OR 數值不變", "樣本數加倍後 OR 數值不變", "不論研究設計是回顧性還是前瞻性，OR 估計值一致", "以上皆是"],
+    "answer": 3,
+    "explanation": "OR 具備行列對調對稱性，且對於不同的抽樣設計（如 Case-control study）均能有效估計。"
+  },
+  {
+    "chapter": 2,
+    "question": "在 2x2 表格中，若 A B / C D 代表頻率，其 OR 的估計式為：",
+    "options": "(A*B)/(C*D)",
+    "options": ["(A*D)/(B*C)", "(A+D)/(B+C)", "(A/N1)/(B/N2)"],
+    "answer": 1,
+    "explanation": "OR = (A/C) / (B/D) = (A*D) / (B*C)，這又稱為交叉乘積比 (Cross-product ratio)。"
+  },
+  {
+    "chapter": 2,
+    "question": "下列哪種研究設計最適合計算相對風險 (Relative Risk)？",
+    "options": ["回顧性研究 (Case-control study)", "前瞻性研究 (Cohort study)", "橫斷面研究 (Cross-sectional study)", "以上皆非"],
+    "answer": 1,
+    "explanation": "只有在能直接觀測或估計邊際機率的情形下（如 Cohort study），RR 的計算才有意義。"
+  },
+  {
+    "chapter": 2,
+    "question": "若要針對 OR 的 log 值計算 95% CI，標準誤 (SE) 的公式涉及哪些項？",
+    "options": ["各格頻率的倒數和之根號", "樣本數的倒數", "平均數與標準差", "相關係數"],
+    "answer": 0,
+    "explanation": "SE(log OR) = sqrt(1/A + 1/B + 1/C + 1/D)。"
+  },
+  {
+    "chapter": 2,
+    "question": "在 2x2 表格的獨立性檢定中，自由度 (df) 為：",
+    "options": ["1", "2", "3", "4"],
+    "answer": 0,
+    "explanation": "df = (r-1)(c-1) = (2-1)(2-1) = 1。"
+  },
+  {
+    "chapter": 2,
+    "question": "若我們將表格的兩列 (Rows) 對調，OR 的數值會如何變化？",
+    "options": ["保持不變", "變為相反數", "變為倒數", "變為平方"],
+    "answer": 2,
+    "explanation": "對調行列會使得 Odds 比較的基準翻轉，因此 OR 變為倒數 (1/OR)。"
+  },
+  {
+    "chapter": 2,
+    "question": "Pearson 獨立性檢定的虛無假設 H0 為：",
+    "options": ["兩變數均值相等", "兩變數變異數相等", "兩變數相互獨立 (OR=1)", "樣本分布為常態"],
+    "answer": 2,
+    "explanation": "獨立性檢定旨在確認類別變數之間是否存在關聯。"
+  },
+  {
+    "chapter": 2,
+    "question": "當表格中出現 0 頻率 (Zero cell count) 時，常見的修正方法是：",
+    "options": ["刪除該資料", "所有格子加 0.5 (Haldane-Anscombe correction)", "使用中位數代替", "忽略它"],
+    "answer": 1,
+    "explanation": "加 0.5 可以避免計算 OR 或其標準誤時發生除以 0 的錯誤。"
+  },
+  {
+    "chapter": 2,
+    "question": "下列關於 Cohen's Kappa 的敘述何者正確？",
+    "options": ["用於測量兩分類者的一致性 (Agreement)", "範圍是 -1 到 1", "考慮了隨機一致性的可能性", "以上皆是"],
+    "answer": 3,
+    "explanation": "Kappa 係數是用於校正隨機因素後的評分一致性測量。"
+  },
+  {
+    "chapter": 2,
+    "question": "在 Case-control study 中，為什麼我們通常不計算 Relative Risk (RR)？",
+    "options": ["因為公式太複雜", "因為不知道疾病在母群體中的盛行率 (Baseline risk)", "因為 OR 比較高級", "因為樣本數太小"],
+    "answer": 1,
+    "explanation": "Case-control study 是人為固定了疾病組與控制組的人數，無法反映真實的發病率。"
+  },
+  {
+    "chapter": 2,
+    "question": "Sensitivity (靈敏度) 的定義是：",
+    "options": ["有病者中被檢出陽性的比例", "無病者中被檢出陰性的比例", "陽性者中有病的比例", "陰性者中無病的比例"],
+    "answer": 0,
+    "explanation": "Sensitivity = P(Test + | Disease +)。"
+  },
+  {
+    "chapter": 2,
+    "question": "Specificity (特異度) 的定義是：",
+    "options": ["有病者中被檢出陽性的比例", "無病者中被檢出陰性的比例", "陽性者中有病的比例", "陰性者中無病的比例"],
+    "answer": 1,
+    "explanation": "Specificity = P(Test - | Disease -)。"
+  },
+  {
+    "chapter": 3,
+    "question": "辛普森悖論 (Simpson's Paradox) 是指：",
+    "options": ["邊際關聯與條件關聯的方向相反", "樣本數越大結果越不準", "三維表無法進行卡方檢定", "機率總和超過 1"],
+    "answer": 0,
+    "explanation": "在考慮第三個變數 (Z) 後，X 與 Y 的關聯方向可能與直接看 X-Y 邊際表時完全不同。"
+  },
+  {
+    "chapter": 3,
+    "question": "若在給定 Z 的每一層中，X 與 Y 都獨立，這稱為：",
+    "options": ["完全獨立", "邊際獨立", "條件獨立 (Conditional Independence)", "聯合獨立"],
+    "answer": 2,
+    "explanation": "定義為 P(X,Y|Z) = P(X|Z)P(Y|Z)。"
+  },
+  {
+    "chapter": 3,
+    "question": "Mantel-Haenszel Test 用於：",
+    "options": ["檢定兩個類別變數的均值", "在控制第三變數下，檢定 X 與 Y 是否有關聯", "判斷是否存在辛普森悖論", "計算模型 AIC"],
+    "answer": 1,
+    "explanation": "這是一種結合多個 2x2 表格來檢定一致條件關聯性的方法。"
+  },
+  {
+    "chapter": 3,
+    "question": "所謂的『同質關聯』(Homogeneous Association) 是指：",
+    "options": ["各層 Z 的 Odds Ratio 皆相等", "所有頻率皆相等", "邊際機率與條件機率相等", "不存在交互作用 (Interaction)"],
+    "answer": 0,
+    "explanation": "在三維表中，若所有條件 OR (給定 Z 後的 OR) 都一樣，則稱此關聯為同質的。"
+  },
+  {
+    "chapter": 3,
+    "question": "Breslow-Day Test 用於檢定什麼？",
+    "options": ["條件獨立性", "同質性 (各層 OR 是否一致)", "邊際獨立性", "常態性"],
+    "answer": 1,
+    "explanation": "Breslow-Day 檢定用於測試各分層 2x2 表格的 Odds Ratio 是否具備同質性。"
+  },
+  {
+    "chapter": 3,
+    "question": "在三維表中，若 XY 獨立, XZ 獨立, YZ 獨立，是否代表 X, Y, Z 三者完全獨立？",
+    "options": ["是", "否", "樣本數夠大就是", "不一定，需考慮三變數交互作用"],
+    "answer": 1,
+    "explanation": "成對獨立 (Pairwise independence) 不代表共同獨立 (Mutual independence)。"
+  },
+  {
+    "chapter": 3,
+    "question": "若邊際 OR 為 2.0，而所有分層後的條件 OR 均為 1.0，這代表：",
+    "options": ["數據有誤", "存在混淆變項 (Confounding)，且實際為獨立", "辛普森悖論的極端案例", "樣本數不足"],
+    "answer": 1,
+    "explanation": "這顯示 Z 變項完全解釋了 X 與 Y 的表面關聯。"
+  },
+  {
+    "chapter": 3,
+    "question": "下列哪種統計模型可以用來檢定『同質關聯』？",
+    "options": ["簡單回歸", "不包含三向交互作用的對數線性模型 (Log-linear model)", "T 檢定", "單因子變異數分析"],
+    "answer": 1,
+    "explanation": "對數線性模型中的交互作用項可用於描述變數間的關聯結構。"
+  },
+  {
+    "chapter": 3,
+    "question": "三維 2x2xK 表格的總自由度 (全飽和模型) 為：",
+    "options": ["2K", "4K-1", "K", "2K-1"],
+    "answer": 1,
+    "explanation": "每層 2x2 有 4 個格子，K 層總共 4K 格，限制為總機率和為 1，故自由度為 4K-1。"
+  },
+  {
+    "chapter": 3,
+    "question": "在 Mantel-Haenszel 統計量中，預期頻率與變異數的計算是在什麼假設下進行的？",
+    "options": ["兩變數不獨立", "條件獨立 (OR=1)", "樣本為非隨機抽樣", "分配為常態"],
+    "answer": 1,
+    "explanation": "它是在『每一層 Z 之下，X 與 Y 均為獨立』的虛無假設下計算的。"
+  },
+  {
+    "chapter": 3,
+    "question": "若 X 與 Y 有關聯，但考慮 Z 後關聯消失，則 Z 被稱為：",
+    "options": ["解釋變項", "中介變項或混淆變項", "結果變項", "無關變項"],
+    "answer": 1,
+    "explanation": "Z 是造成 X, Y 表面關聯的真正原因或路徑。"
+  },
+  {
+    "chapter": 3,
+    "question": "在使用 Mantel-Haenszel 檢定時，如果各層的 OR 方向相反（例如一層 >1，另一層 <1），會發生什麼事？",
+    "options": ["檢定力會大幅下降，甚至無法偵測出關聯", "結果會自動取絕對值", "檢定統計量會變大", "檢定會報錯"],
+    "answer": 0,
+    "explanation": "MH 檢定假設關聯方向一致。如果方向相反，正負效應會互相抵銷。"
+  },
+  {
+    "chapter": 3,
+    "question": "條件獨立性 P(X=i, Y=j | Z=k) 等於：",
+    "options": ["P(X=i|Z=k) * P(Y=j|Z=k)", "P(X=i) * P(Y=j)", "P(Z=k | X=i, Y=j)", "P(X=i) + P(Y=j)"],
+    "answer": 0,
+    "explanation": "這是條件獨立的機率乘法定義。"
+  },
+  {
+    "chapter": 3,
+    "question": "在進行三維表分析時，如果某層的樣本數極小（例如只有 1 人），應該如何處理？",
+    "options": ["強行分析", "考慮合併相鄰類別或使用精確檢定", "直接刪除該層", "當作無窮大"],
+    "answer": 1,
+    "explanation": "類別資料分析對於稀疏資料 (Sparse data) 需特別謹慎。"
+  },
+  {
+    "chapter": 3,
+    "question": "邊際獨立 (Marginal Independence) 是否保證條件獨立 (Conditional Independence)？",
+    "options": ["是", "否", "僅在 Z 與 X, Y 都獨立時成立", "不一定"],
+    "answer": 1,
+    "explanation": "邊際獨立與條件獨立是兩個不同的概念，互不保證。"
+  },
+  {
+    "chapter": 4,
+    "question": "廣義線性模型 (GLM) 的連接函數 (Link Function) 作用是：",
+    "options": ["將解釋變數轉換為常態", "連結預期值與線性預測值", "增加模型的 R 平方", "減少計算時間"],
+    "answer": 1,
+    "explanation": "Link function g(mu) = alpha + beta*x，將反應變數的期望值 mu 對應到實數軸上的線性預測值。"
+  },
+  {
+    "chapter": 4,
+    "question": "對於二項分配 (Binomial) 的反應變數，最標準（正規）的連接函數是：",
+    "options": ["Identity Link", "Log Link", "Logit Link", "Probit Link"],
+    "answer": 2,
+    "explanation": "Logit(pi) = log(pi/(1-pi)) 是二項分配的 Canonical link。"
+  },
+  {
+    "chapter": 4,
+    "question": "在 GLM 的系統成分中，解釋變數的組合方式是：",
+    "options": ["乘法關係", "指數關係", "線性組合 (Linear predictor)", "對數關係"],
+    "answer": 2,
+    "explanation": "系統成分 eta = alpha + beta1*x1 + beta2*x2 + ..."
+  },
+  {
+    "chapter": 4,
+    "question": "Logistic Regression 中，反應變數 Y 的分配屬於：",
+    "options": ["常態分配", "二項分配 (或白努利分配)", "Poisson 分配", "指數分配"],
+    "answer": 1,
+    "explanation": "Logistic 回歸用於分析 0/1 或比例型數據，對應二項分配。"
+  },
+  {
+    "chapter": 4,
+    "question": "若採用 Identity Link (恆等連接) 分析比例資料，模型的主要風險是：",
+    "options": ["預測出的機率可能超出 [0, 1] 範圍", "計算不出來", "模型太簡單", "變異數會爆炸"],
+    "answer": 0,
+    "explanation": "線性機率模型 (LPM) 無法保證預測值落在合理機率區間內。"
+  },
+  {
+    "chapter": 4,
+    "question": "Probit Link 函數是基於什麼分配的累積分布函數 (CDF)？",
+    "options": ["標準常態分配", "t 分配", "Logistic 分配", "均勻分配"],
+    "answer": 0,
+    "explanation": "Probit 模型假設潛在變數服從常態分配。"
+  },
+  {
+    "chapter": 4,
+    "question": "在 Logistic 模型中，當 x 趨向正無窮大時，pi(x) 的極限值為：",
+    "options": ["0", "1", "0.5", "無窮大"],
+    "answer": 1,
+    "explanation": "Logistic 曲線呈 S 型，範圍被壓縮在 0 與 1 之間。"
+  },
+  {
+    "chapter": 4,
+    "question": "指數族 (Exponential Family) 分配的一般形式包含下列哪些參數？",
+    "options": ["自然參數 (Natural parameter) 與離散參數 (Dispersion parameter)", "均值與中位數", "截距與斜率", "僅包含平均值"],
+    "answer": 0,
+    "explanation": "這是 GLM 理論中隨機成分的標準數學定義。"
+  },
+  {
+    "chapter": 4,
+    "question": "下列何者是 Logit 轉換的正確公式？",
+    "options": ["pi / (1-pi)", "log(pi / (1-pi))", "log(pi)", "1 / (1 + exp(-x))"],
+    "answer": 1,
+    "explanation": "Logit 即為 Log-odds。"
+  },
+  {
+    "chapter": 4,
+    "question": "GLM 的模型參數估計通常使用哪種演算法？",
+    "options": ["最小平方法 (OLS)", "疊代加權最小平方法 (IWLS) 或 Newton-Raphson", "梯度下降法", "遺傳演算法"],
+    "answer": 1,
+    "explanation": "因為似然方程通常沒有解析解，需使用疊代法求解。"
+  },
+  {
+    "chapter": 4,
+    "question": "在 GLM 中，Saturated Model (飽和模型) 是指：",
+    "options": ["參數個數等於觀察值個數的模型", "沒有任何解釋變數的模型", "AIC 最低的模型", "所有變數都顯著的模型"],
+    "answer": 0,
+    "explanation": "飽和模型能完全擬合觀察數據，其殘差為 0。"
+  },
+  {
+    "chapter": 4,
+    "question": "Deviance (離散度) 是透過比較當前模型與哪個模型得到的？",
+    "options": ["虛無模型 (Null model)", "飽和模型 (Saturated model)", "線性模型", "另一個隨機模型"],
+    "answer": 1,
+    "explanation": "Deviance = 2 * (LogLikelihood_saturated - LogLikelihood_current)。"
+  },
+  {
+    "chapter": 4,
+    "question": "Poisson Regression 最常用於處理什麼類型的數據？",
+    "options": ["0/1 數據", "計數數據 (Count data)", "連續機率數據", "等級數據"],
+    "answer": 1,
+    "explanation": "Poisson 分配是分析稀有事件發生次數的首選。"
+  },
+  {
+    "chapter": 4,
+    "question": "在 Poisson 回歸中，若連接函數為 Log Link，則 beta 的意義是：",
+    "options": ["期望值的變化量", "期望值的乘法倍數 (Rate Ratio)", "變異數的增加量", "勝算比"],
+    "answer": 1,
+    "explanation": "exp(beta) 代表 x 每增加一單位，期望次數變為原來的倍數。"
+  },
+  {
+    "chapter": 4,
+    "question": "GLM 模型中，誤差項的變異數 Var(Y) 通常是：",
+    "options": ["常數", "期望值 mu 的函數", "隨機變動", "等於 0"],
+    "answer": 1,
+    "explanation": "例如二項分配變異數為 n*pi*(1-pi)，取決於均值 pi。"
+  },
+  {
+    "chapter": 5,
+    "question": "在 Logistic Regression 模型中，beta 係數的解釋為：",
+    "options": ["x 每增加一單位，機率 pi 的增加量", "x 每增加一單位，Log-odds 的增加量", "x 每增加一單位，機率 pi 的倍數", "x 每增加一單位，樣本數的變化"],
+    "answer": 1,
+    "explanation": "Logit(pi) 為線性方程，故 beta 是斜率，代表 log-odds 的變化。"
+  },
+  {
+    "chapter": 5,
+    "question": "若一個 Logistic 模型得到 beta = 0.693，則 exp(beta) 約等於：",
+    "options": ["0.5", "1.0", "2.0", "3.0"],
+    "answer": 2,
+    "explanation": "exp(0.693) 接近 2，代表 Odds 倍增。"
+  },
+  {
+    "chapter": 5,
+    "question": "若 beta > 0，代表隨著 x 增加，成功機率 pi 會：",
+    "options": ["增加", "減少", "保持不變", "先增後減"],
+    "answer": 0,
+    "explanation": "Logistic 函數是單調遞增的，正係數代表正向關聯。"
+  },
+  {
+    "chapter": 5,
+    "question": "Logistic Regression 預測機率的公式為 pi(x) = ",
+    "options": ["exp(alpha + beta*x)", "1 / (1 + exp(-(alpha + beta*x)))", "alpha + beta*x", "log(alpha + beta*x)"],
+    "answer": 1,
+    "explanation": "這是 Logit 的反函數 (Logistic 函數)。"
+  },
+  {
+    "chapter": 5,
+    "question": "模型檢定 H0: beta = 0 的 Wald Test 統計量計算方式為：",
+    "options": ["(Estimate - 0) / SE", "Estimate * SE", "log(Estimate)", "Residuals / df"],
+    "answer": 0,
+    "explanation": "Wald 統計量 z = beta_hat / SE_beta，大樣本下服從標準常態分配。"
+  },
+  {
+    "chapter": 5,
+    "question": "Likelihood Ratio Test (LRT) 檢定變數顯著性時，其統計量服從卡方分配，自由度為：",
+    "options": ["樣本數 n", "變數個數的差值", "總頻率", "1"],
+    "answer": 1,
+    "explanation": "自由度等於兩個嵌套模型 (Nested models) 參數個數的差異。"
+  },
+  {
+    "chapter": 5,
+    "question": "若想在 R 語言中擬合 Logistic 回歸，glm() 函數的參數 family 應設定為：",
+    "options": ["gaussian", "poisson", "binomial", "gamma"],
+    "answer": 2,
+    "explanation": "family=binomial 預設使用 logit link。"
+  },
+  {
+    "chapter": 5,
+    "question": "當解釋變數為類別變數 (Categorical) 時，Logistic 模型會如何處理？",
+    "options": ["直接放入數字 1, 2, 3", "轉換為指標變數 (Indicator/Dummy variables)", "計算平均值", "忽略該變數"],
+    "answer": 1,
+    "explanation": "類別變數需透過編碼轉換為一組 0/1 變數。"
+  },
+  {
+    "chapter": 5,
+    "question": "Logistic Regression 中的交互作用項 (Interaction) 代表什麼？",
+    "options": ["一個解釋變數對 Y 的影響取決於另一個解釋變數的數值", "模型出現錯誤", "兩個變數高度線性相關", "樣本數不夠"],
+    "answer": 0,
+    "explanation": "交互作用意味著斜率 beta 是變動的。"
+  },
+  {
+    "chapter": 5,
+    "question": "若兩個解釋變數 X1, X2 高度相關，可能會導致模型出現什麼問題？",
+    "options": ["多重共線性 (Multicollinearity)", "SE 過大，導致變數不顯著", "參數估計不穩定", "以上皆是"],
+    "answer": 3,
+    "explanation": "共線性會使資訊重疊，難以區分單一變數的效應。"
+  },
+  {
+    "chapter": 5,
+    "question": "在樣本量較小時，Logistic 回歸的 MLE 估計值可能會：",
+    "options": ["非常精確", "出現偏差或不收斂 (Separation problem)", "恆等於 0", "恆等於 1"],
+    "answer": 1,
+    "explanation": "若資料能被完美分割 (Perfect separation)，MLE 估計值會趨向無窮大。"
+  },
+  {
+    "chapter": 5,
+    "question": "所謂的『有效樣本數』在分析二項數據時，通常指的是：",
+    "options": ["總觀察人數", "成功與失敗次數中較小的那一個", "變數個數", "遺漏值個數"],
+    "answer": 1,
+    "explanation": "若某一類樣本極少，模型估計會變得很不穩定。"
+  },
+  {
+    "chapter": 5,
+    "question": "Logistic 模型中的截距項 alpha 代表什麼意義？",
+    "options": ["當所有 x=0 時的成功機率", "當所有 x=0 時的 Log-odds", "當所有 x=0 時的 Odds", "模型的整體準確度"],
+    "answer": 1,
+    "explanation": "Logit(pi) = alpha + 0，故 alpha 是基準線的 log-odds。"
+  },
+  {
+    "chapter": 5,
+    "question": "進行 Logistic Regression 時，為什麼我們比較喜歡使用 LRT 而非 Wald Test？",
+    "options": ["LRT 計算比較快", "Wald Test 在係數很大時會變得不穩定 (Hauck-Donner effect)", "LRT 不需使用似然函數", "R 預設只提供 LRT"],
+    "answer": 1,
+    "explanation": "當 beta 極大時，Wald 的 SE 會被高估，導致顯著性失效；LRT 則無此問題。"
+  },
+  {
+    "chapter": 5,
+    "question": "模型預測後的準確率可以用下列何者評估？",
+    "options": ["分類矩陣 (Classification Matrix / Confusion Matrix)", "ROC 曲線下的面積 (AUC)", "R-squared (雖然不完美)", "以上皆是"],
+    "answer": 3,
+    "explanation": "這些都是類別預測常用的診斷工具。"
+  },
+  {
+    "chapter": 6,
+    "question": "AIC (Akaike Information Criterion) 的計算公式包含：",
+    "options": ["-2 * log(Likelihood) + 2 * (參數個數)", "-2 * log(Likelihood) + log(n) * (參數個數)", "殘差平方和", "1 - (RSS/TSS)"],
+    "answer": 0,
+    "explanation": "AIC 旨在平衡模型擬合度 (Likelihood) 與模型複雜度 (參數罰項)。"
+  },
+  {
+    "chapter": 6,
+    "question": "AIC 與 BIC 的主要差別在於：",
+    "options": ["BIC 對參數個數的懲罰更重 (考慮了樣本數 n)", "AIC 比較準", "BIC 只能用於線性模型", "兩者完全一樣"],
+    "answer": 0,
+    "explanation": "BIC 的罰項為 k*log(n)，當 n > 7 時，BIC 傾向選擇更精簡的模型。"
+  },
+  {
+    "chapter": 6,
+    "question": "在進行變數選擇時，『Backward Elimination』是指：",
+    "options": ["從沒有變數開始一個個加", "從全模型開始一個個剔除不顯著變數", "隨機選取變數", "只選取 AIC 最低的變數"],
+    "answer": 1,
+    "explanation": "這是由大到小的變數篩選策略。"
+  },
+  {
+    "chapter": 6,
+    "question": "Hosmer-Lemeshow Test 用於：",
+    "options": ["檢定單一變數顯著性", "評估模型整體適配度 (Goodness of Fit)", "計算 Odds Ratio", "偵測共線性"],
+    "answer": 1,
+    "explanation": "它透過將觀測值分組並比較觀測次數與預期次數來評估模型是否擬合數據。"
+  },
+  {
+    "chapter": 6,
+    "question": "Pearson Residuals 的計算涉及：",
+    "options": ["(觀測值 - 預期值) / 標準誤", "log(觀測值)", "預測機率的平方", "AIC 的變化"],
+    "answer": 0,
+    "explanation": "這是標準化的殘差，用於尋找離群值 (Outliers)。"
+  },
+  {
+    "chapter": 6,
+    "question": "如果模型的 Deviance 遠大於其自由度 (df)，通常代表：",
+    "options": ["模型完美擬合", "存在過度離散 (Overdispersion) 或模型適配不佳", "樣本數太大", "AIC 計算錯誤"],
+    "answer": 1,
+    "explanation": "在理想情況下，Deviance/df 應接近 1。"
+  },
+  {
+    "chapter": 6,
+    "question": "下列何者可以用來診斷 Logistic 回歸中的影響點 (Influential observations)？",
+    "options": ["Cook's Distance", "Hat values (Leverage)", "DfBetas", "以上皆是"],
+    "answer": 3,
+    "explanation": "這些指標能反映單一觀察值對參數估計的影響程度。"
+  },
+  {
+    "chapter": 6,
+    "question": "所謂的『準似然法』(Quasi-likelihood) 主要用於處理什麼問題？",
+    "options": ["過度離散 (Overdispersion)", "樣本數太小", "遺漏值", "非線性關係"],
+    "answer": 0,
+    "explanation": "它允許我們在不完全指定分布的情形下，透過調整變異數函數來估計模型。"
+  },
+  {
+    "chapter": 6,
+    "question": "在解釋多類別反應變數 (Nominal) 時，應使用哪種擴展模型？",
+    "options": ["多項式 Logistic 回歸 (Multinomial Logistic Regression)", "線性回歸", "累積 Logit 模型 (Cumulative Logit)", "Poisson 回歸"],
+    "answer": 0,
+    "explanation": "當 Y 有超過兩個無序類別時，使用多項式 Logit。"
+  },
+  {
+    "chapter": 6,
+    "question": "累積 Logit 模型 (Cumulative Logit Model) 最適合處理什麼資料？",
+    "options": ["無序類別資料", "有序類別資料 (Ordinal data, 如滿意度)", "連續資料", "時間序列資料"],
+    "answer": 1,
+    "explanation": "它利用了類別之間的順序資訊。"
+  },
+  {
+    "chapter": 6,
+    "question": "在變數選擇中，Stepwise Regression 的缺點是：",
+    "options": ["可能無法找到全局最優模型", "p-value 會被誤導（多重檢定問題）", "容易過度擬合 (Overfitting)", "以上皆是"],
+    "answer": 3,
+    "explanation": "自動化篩選雖然方便，但統計性質往往不穩定。"
+  },
+  {
+    "chapter": 6,
+    "question": "ROC 曲線的 X 軸與 Y 軸分別代表什麼？",
+    "options": ["X: 1-Specificity, Y: Sensitivity", "X: Sensitivity, Y: Specificity", "X: 精確度, Y: 召回率", "X: 樣本數, Y: 準確度"],
+    "answer": 0,
+    "explanation": "ROC 曲線描繪了不同門檻值下，偽陽性率與真陽性率的權衡。"
+  },
+  {
+    "chapter": 6,
+    "question": "如果一個模型的 AUC 為 0.5，代表該模型的預測能力：",
+    "options": ["完美", "良好", "與隨機猜測無異", "極差（反向預測）"],
+    "answer": 2,
+    "explanation": "AUC=0.5 代表模型不具備分辨能力。"
+  },
+  {
+    "chapter": 6,
+    "question": "殘差圖 (Residual plots) 在類別資料分析中，主要用來檢查：",
+    "options": ["誤差的常態性", "連結函數的正確性或是否存在非線性趨勢", "樣本數是否足夠", "R 平方大小"],
+    "answer": 1,
+    "explanation": "觀察殘差是否存在模式，可判斷是否需要加入二次項或調整連結函數。"
+  },
+  {
+    "chapter": 6,
+    "question": "在複雜模型中，若刪除一個不顯著的變數導致其他變數的係數大幅變動，這暗示：",
+    "options": ["存在混淆 (Confounding) 或共線性", "模型更準了", "可以忽略該現象", "應立即停止分析"],
+    "answer": 0,
+    "explanation": "這是變數間相互關聯的徵兆，需謹慎判斷是否保留該變數。"
+  }
+]
