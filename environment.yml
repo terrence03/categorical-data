@@ -1,0 +1,13 @@
+name: categorical-data         # 環境名稱
+channels:
+  - conda-forge              # 建議優先使用 conda-forge，套件最齊全
+  - defaults
+dependencies:
+  - python=3.14              # 指定 Python 版本
+  - r-base                   # 指定 R 語言版本
+  - r-tidyverse              # R 的常用套件組合
+  - pandas                   # Python 套件（優先從 conda 下載）
+  - scikit-learn
+  - fastapi
+  - uvicorn
+  - pip:                     # 如果 conda 找不到的 Python 套件，再用 pip 補足
