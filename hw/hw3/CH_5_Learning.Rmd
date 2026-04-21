@@ -23,7 +23,7 @@ output: html_document
 ## 資料
 
 ```{r}
-Data <- read.table("~/Teaching/CDA_master_inService_2026/data/crab.txt", header=TRUE)
+Data <- read.table("crab.txt", header=TRUE)
 str(Data)
 ```
 
