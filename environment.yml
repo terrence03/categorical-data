@@ -17,3 +17,5 @@ dependencies:
   - scikit-learn
   - fastapi
   - uvicorn
+  - statsmodels
+  - matplotlib
