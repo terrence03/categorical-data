@@ -1,0 +1,151 @@
+---
+title: "hw1"
+author: "chienhua.hsu"
+date: "2026-03-10"
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
+---
+  
+# 乳糖不耐症比例調查
+  
+## 事實
+  
+  根據全球醫學統計，成年人患有乳糖不耐症（Lactose Intolerance）的平均比例約為 65% ($\pi_0 = 0.65$)。但在亞洲地區，由於基因差異，此比例通常被認為顯著較高。
+
+|  項目  | 全球平均 (H0) |
+|--------|:------------:|
+| 百分比 |      65%     |
+  
+## 猜想
+  
++ 傳說中，亞洲人因缺乏分解乳糖的酵素，比例遠高於全球平均。
++ 針對周圍成年人進行小規模(n=10)抽樣，猜想其比例高於 0.65。
++ 利用統計檢定來審視這個猜想：
+
++ $H_0: \pi = 0.65$
++ $H_a: \pi > 0.65$
+
+> **說明**：$H_a$ 設定為 $\pi > 0.65$ 而非 $\pi \neq 0.65$，是因為我們的研究問題有**方向性**——我們只關心亞洲人比例是否「高於」全球平均，而非單純「不同於」全球平均。方向性假設對應**單尾檢定**，這個選擇將影響後續的 critical value。
+  
+## 實驗
+  
++ 隨機調查 10 位成年人並記錄其飲用乳製品後的反應。
+
+## 觀察結果：
+
++ 親朋好友、同事參與調查人數為 $n = 10$ 
++ 具乳糖不耐症狀的人數為 $x = 5$ (假設值)
++ 樣本比例為 $\hat{\pi} = x/n$
+  
+```{r}
+n <- 10; x <- 5 # change values here
+alpha <- 0.05
+pihat <- x/n; pi0 <- 0.65
+```
+
+
+## 區間估計 (Confidence Interval)
+
+> **說明（雙尾）**：信賴區間的目的是估計 $\pi$ 的**合理範圍**，需要同時考慮估計值偏高或偏低的可能性，因此使用**雙尾**。公式中用 $z_{\alpha/2}$（而非 $z_\alpha$），在 $\alpha = 0.05$ 時對應 $z_{0.025} = 1.96$，讓兩尾各切掉 2.5% 的面積，中間保留 95%。
+
++ Wald Test
+
+\[\hat{\pi}\pm
+  z_{\alpha/2}\sqrt{\frac{\hat{\pi}(1-\hat{\pi})}{n}}.\]
+
+> **Wald CI 的邏輯**：標準誤 $\sqrt{\hat{\pi}(1-\hat{\pi})/n}$ 用**估計值** $\hat{\pi}$ 計算。當 $\hat{\pi}$ 接近 0 或 1 時，標準誤趨近於 0，CI 會退化成一個點，這是 Wald CI 的主要缺點。
+
+```{r}
+# qnorm(alpha/2) 約為 -1.96（負值），加上負號後等同於減去 1.96 * SE，得到下界
+# qnorm(1-alpha/2) 約為 +1.96（正值），加上正號後得到上界
+# 兩行都用「+」是因為 qnorm(alpha/2) 本身已是負數，自動處理了方向
+lb <- pihat + qnorm(alpha/2)*sqrt(pihat*(1-pihat)/n) 
+ub <- pihat + qnorm(1-alpha/2)*sqrt(pihat*(1-pihat)/n) 
+cat("Wald 95% CI is [", lb, ub, "]\n")
+```
+
++ Score Test
+
+\[
+  \hat{\pi}\left(\frac{n}{n+z_{\alpha/2}^2}\right)+
+    \frac{1}{2}\left(\frac{z_{\alpha/2}^2}{n+z_{\alpha/2}^2}\right)
+  \pm\sqrt{\frac{1}{n+z_{\alpha/2}^2}\left[\left(\frac{n\hat{\pi}(1-\hat{\pi})}{n+z_{\alpha/2}^2}\right)+
+                                             \left(\frac{z_{\alpha/2}^2}{4(n+z_{\alpha/2}^2)}\right)\right]}
+  \]
+
+> **Score CI（Wilson CI）的邏輯**：Score test 的標準誤用**虛無假設值** $\pi_0$ 計算，反推 CI 時需對 $\pi_0$ 解二次方程式，因此公式比 Wald 複雜。優點是即使 $\hat{\pi} = 0$ 或 $1$，CI 仍有意義，小樣本下表現優於 Wald。同樣使用 $z_{\alpha/2}$（雙尾）。
+
+```{r}
+# (qnorm(alpha/2))^2 取平方後與 (qnorm(1-alpha/2))^2 相等，因此兩種寫法皆可
+# 這裡用 alpha/2 取平方，結果與用 1-alpha/2 取平方一致（約為 1.96^2 = 3.84）
+z2 <- (qnorm(alpha/2))^2
+mu <- pihat*n/(n+z2) + .5*(z2/(n+z2))
+sig <- sqrt((n*pihat*(1-pihat)/(n+z2) + z2/4/(n+z2))/(n+z2))
+lb <- mu - sig
+ub <- mu + sig
+cat("Score 95% CI is [", lb, ub, "]\n")
+```
+
+## 假設檢定
+
+### Large sample approximation
+
++ Check $np \geq 5$ and $n(1-p) \geq 5$
+
+> **說明**：Wald test 與 Score test 都依賴中央極限定理（CLT），將 $\hat{\pi}$ 近似為常態分布。$np \geq 5$ 確保成功次數的期望值夠大，$n(1-p) \geq 5$ 確保失敗次數的期望值夠大，兩者皆滿足才代表分布不過度偏斜，常態近似才可靠。本例 $n=10$，$\hat{\pi}=0.5$，兩個條件剛好等於 5，邊緣通過。
+
+  + $H_0$ vs $H_a$ 
+  + $\alpha=0.05$
+  + Test statistics
+
++ Wald Test
+\[
+  \frac{\hat{\pi} - \pi_0}{\sqrt{\hat{\pi} (1-\hat{\pi})/n}} = t_w
+  \]
+  
+> **Wald 統計量**：分母用估計值 $\hat{\pi}$ 計算標準誤，衡量「估計值離假設值多遠」。
+
++ Score Test
+\[
+  \frac{\hat{\pi} - \pi_0}{\sqrt{\pi_0 (1-\pi_0)/n}} = t_s
+  \]
+
+> **Score 統計量**：分母用虛無假設值 $\pi_0$ 計算標準誤，衡量「在 $H_0$ 成立的假設下，資料與假設有多不一致」。
+
+```{r}
+(pihat-pi0)/sqrt(pihat*(1-pihat)/n)
+(pihat-pi0)/sqrt(pi0*(1-pi0)/n)
+```
+
+
++ Critical value $1.645$ (one-tailed)
+
+> **說明（單尾）**：因為 $H_a: \pi > 0.65$ 是**右尾單尾**假設，只關心統計量是否「夠大」，所以 critical value 取右尾面積為 $\alpha = 0.05$ 的點：
+> $$z_{0.05} = \texttt{qnorm}(1 - 0.05) = 1.645$$
+> 若改用雙尾，則 critical value 為 $z_{0.025} = 1.96$（更嚴格），但與本研究的單方向假設不符。
+
++ Decision:
+  + Walt Test: reject $H_0$ if $t_w > 1.645$
+  + Score Test: regject $H_0$ if $t_s > 1.645$
+  
+  ### Small Sample Exact Test
+
+> **說明**：$n=10$ 樣本極小，大樣本近似的可靠性存疑，因此改用精確檢定（Exact Test）。直接計算二項分布在 $H_0: \pi = \pi_0$ 下，觀察到「至少 $x$ 個成功」的機率，不依賴常態近似。
+
+  + $p$-value is
+
+> **p-value**：$P(X \geq x \mid \pi_0)$，即在 $H_0$ 成立下，觀察到「至少 $x$ 個成功」的機率。`1 - pbinom(x-1, n, pi0)` 計算的正是右尾機率，對應單尾 $H_a: \pi > \pi_0$。
+
+```{r}
+1 - pbinom(x-1, n, pi0)
+```
+
++ mid $p$-value 
+
+> **mid p-value**：標準 p-value 在離散分布下偏保守（偏大），mid p-value 將恰好等於觀察值的機率對半分配，使結果更接近連續分布的行為，是一種修正方式。
+
+```{r}
+1 - pbinom(x, n, pi0) + dbinom(x, n, pi0)/2
+```
