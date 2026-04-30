@@ -1,0 +1,76 @@
+---
+title: "Midterm Examine / Categorical Data Analysis"
+author: "Sheng-Mao Chang"
+date: "4/30/2026"
+output: html_document
+---
+
+## Q1: 台灣手機佔有率問題。
+
+某調查針對台灣及香港估計手機品牌市占率，資料顯示如下：
+
+```{r, echo=FALSE}
+  library(knitr)
+  cc <- matrix(c(110, 36, 12, 8, 44, 50, 17, 10, 0, 23), 5, 2); cc <- t(cc)
+  colnames(cc) <- c("Apple", "Samsong", "OPPO", "Xiomi", "Others")
+  rownames(cc) <- c("Taiwan", "Hong Kong")
+  kable(cc)
+```
+
+- (20%) 請利用統計檢定來審視 $H_0: Apple 手機佔有率在台灣為 50\%$ vs $H_a: Apple 手機佔有率在台灣不為 50\%$。
+- (20%) 請利用Odds Ratio的概念來檢視是否台灣人比香港人更愛用Apple手機。
+- (20%) 請檢定是否佔有率與臺港二地是否獨立。
+
+  
+## Q2: 乳癌預測。
+
+- (20%) 這個乳癌資料庫來自University of Wisconsin Hospitals（威斯康辛大學醫院，麥迪遜），由William H. Wolberg醫師提供。其內容為截至 1992 年 7 月 15 日止，對 699 位乳房腫瘤病患的切片檢查結果所進行的評估。九項腫瘤特徵皆以 1 至 10 分量表進行評分，並已知每位病患的最終診斷結果。此資料集共有 699 筆觀測值與 11 個欄位。請建構一預測模型，並執行模型選型，並評價其預測能力。
+```{r}
+library(MASS)
+data(biopsy)
+str(biopsy)
+```
+變數說明：
+
+- 反應變數： class = benign(良性)； = malignant(惡性)。
+- 自變數：
+  - v1: 腫塊厚度
+  - v2: 細胞數
+  - v3: 細胞平整度
+  - v4: 邊緣黏附程度
+  - v5: 上表皮細胞數
+  - v6: 裸核數
+  - v7: 均勻染色質數
+  - v8: 正常核仁數
+  - v9: 有絲分裂數
+
+```{r}
+## remove NA values
+sel <- which(is.na(biopsy$V6))
+bio2 <- biopsy[-sel,]
+## remove id
+bio2 <- bio2[,-1]
+
+## first model
+out <- glm(class~., data=bio2, family="binomial")
+summary(out)
+```
+
+## Q3: 住宅滿意度調查
+
+- (20%) 丹麥住宅滿意度調查結果如下：
+
+```{r}
+library(MASS)
+data(housing)
+str(housing)
+```
+
+請用四個自變數(Infl, Type, Cont, Freq) 預測滿意度(sat)。
+
+- 反應變數： sat = Low, Medium, High (住宅滿意度)
+- 自變數：
+  - Infl: 住戶對於房產管理事務所感受到的影響力程度。
+  - Type: 住宅型式 (Tower, Atrium, Apartment, Terrace)。
+  - Cont: 住戶與其他住戶之間所獲得的互動機會 (Low, High)。
+  - Freq: 住宅內人數。
